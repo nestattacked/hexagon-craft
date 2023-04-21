@@ -1,0 +1,15 @@
+{
+  "name": "hexagon-craft",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "nodemon --exec ts-node src/index.mts",
+    "build": "rimraf build && tsc -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.11",
+    "nodemon": "^2.0.22",
+    "rimraf": "^5.0.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
+  }
+}
