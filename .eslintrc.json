@@ -17,7 +17,8 @@
         "singleQuote": true,
         "trailingComma": "none"
       }
-    ]
+    ],
+    "no-unused-vars": "off"
   },
   "root": true
 }

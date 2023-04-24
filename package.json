@@ -2,7 +2,7 @@
   "name": "hexagon-craft",
   "version": "0.0.1",
   "scripts": {
-    "dev": "nodemon --exec ts-node src/index.mts",
+    "dev": "nodemon --exec ts-node src/server.mts",
     "lint": "eslint .",
     "build": "rimraf build && tsc -p tsconfig.json"
   },
