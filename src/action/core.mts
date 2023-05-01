@@ -1,10 +1,11 @@
 enum ActionType {
   Move,
-  Emerge
+  See,
+  Unsee
 }
 
 interface Core {
   type: ActionType;
 }
 
-export { Core, ActionType };
+export { ActionType, Core };

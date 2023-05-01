@@ -1,6 +1,7 @@
-import { Emerge } from './emerge.mjs';
-import { Move } from './move.mjs';
+import { MoveAction } from './move.mjs';
+import { SeeAction } from './see.mjs';
+import { UnseeAction } from './unsee.mjs';
 
-type Action = Move | Emerge;
+type Action = MoveAction | SeeAction | UnseeAction;
 
 export { Action };

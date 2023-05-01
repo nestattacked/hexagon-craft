@@ -1,2 +1,4 @@
 node_modules
 build
+src/server/config.mts
+src/client/config.mts

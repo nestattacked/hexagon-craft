@@ -1,22 +1,22 @@
-import { Vector3 } from '../common/vector3.mjs';
-import { World, getEntityById } from '../engine/world.mjs';
-import { takeSteps } from './common.mjs';
+import { Vector3, sum } from '../common/vector3.mjs';
+import { Game, getEntityById } from '../game/index.mjs';
+import { EntityType } from '../game/entity/core.mjs';
 import { ActionType, Core } from './core.mjs';
 
-interface Move extends Core {
+interface MoveAction extends Core {
   type: ActionType.Move;
   id: string;
-  steps: Vector3[];
+  step: Vector3;
 }
 
-const move = (world: World, action: Move) => {
-  const entity = getEntityById(world, action.id);
+const act = (game: Game, action: MoveAction) => {
+  const unit = getEntityById(game, action.id, EntityType.Unit);
 
-  if (entity === undefined) {
+  if (unit === undefined) {
     return;
   }
 
-  takeSteps(entity, action.steps);
+  unit.coord = sum(unit.coord, action.step);
 };
 
-export { Move, move };
+export { MoveAction, act };

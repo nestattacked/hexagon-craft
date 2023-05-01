@@ -1,13 +1,14 @@
-import { Vector3 } from '../common/vector3.mjs';
+import { Vector3 } from '../../common/vector3.mjs';
 
 enum EntityType {
   Tile,
   Unit
 }
 
-interface Core extends Vector3 {
+interface Core {
   id: string;
   type: EntityType;
+  coord: Vector3;
 }
 
 export { Core, EntityType };
