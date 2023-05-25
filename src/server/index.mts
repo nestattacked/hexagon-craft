@@ -1,27 +1,73 @@
-import { loadGame } from '../engine/load-game.mjs';
-import { parse } from '../engine/parse.mjs';
-import { test } from '../engine/test.mjs';
+import { Socket, createServer } from 'net';
+import { loadGame } from './load-game.mjs';
 import { tick } from '../engine/tick.mjs';
-import { OrderType } from '../order/core.mjs';
-import { Order } from '../order/index.mjs';
-import { MoveOrder } from '../order/move.mjs';
+import { Order, test, parse } from '../order/index.mjs';
+import { port, secrets } from './config.mjs';
+import { decodeMessages } from '../common/decode-messages.mjs';
+import { order as orderDecoder } from '../common/decoder/order.mjs';
+import { isValidSignature } from '../common/sign.mjs';
+import { integer } from '../common/decoder/common.mjs';
+import { encodeMessage } from '../common/encode-message.mjs';
 
 const game = loadGame();
+const sockets: (Socket | undefined)[] = secrets.map(() => undefined);
 
 const onOrder = (order: Order) => {
   if (!test(game, order)) {
     return;
   }
 
+  sockets.forEach((socket, playerIndex) => {
+    if (socket === undefined) {
+      return;
+    }
+    const operation = parse(game, order, playerIndex);
+    socket.write(
+      encodeMessage(JSON.stringify(operation), secrets[playerIndex])
+    );
+  });
+
   const operation = parse(game, order, -1);
   tick(game, operation);
 };
 
-const moveOrder: MoveOrder = {
-  type: OrderType.Move,
-  commander: 0,
-  id: 'ironman',
-  steps: [{ q: 2, r: -2, s: 0 }]
+const onMessage = (message: string, socket: Socket) => {
+  const signature = message.slice(message.length - 64);
+  const body = message.slice(0, message.length - 64);
+
+  if (!sockets.includes(socket)) {
+    const decoded = integer(0).run(body);
+    if (!decoded.ok) {
+      return;
+    }
+    const playerIndex = decoded.result;
+    if (isValidSignature(body, signature, playerIndex)) {
+      sockets[playerIndex] = socket;
+    }
+    return;
+  }
+
+  const decoded = orderDecoder().run(body);
+  if (!decoded.ok) {
+    return;
+  }
+  if (!isValidSignature(body, signature, decoded.result.commander)) {
+    return;
+  }
+
+  onOrder(decoded.result);
 };
 
-onOrder(moveOrder);
+const server = createServer((socket) => {
+  let remain = '';
+
+  const onData = (data: Buffer) => {
+    const result = decodeMessages(remain, data);
+    remain = result.remain;
+    result.messages.forEach((message) => onMessage(message, socket));
+  };
+
+  socket.on('data', onData);
+});
+
+server.listen(port);

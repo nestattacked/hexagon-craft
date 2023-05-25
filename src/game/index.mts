@@ -1,9 +1,7 @@
-import { Operation } from '../order/operation.mjs';
 import { EntityType } from './entity/core.mjs';
 import { Entity } from './entity/index.mjs';
 
 interface Game {
-  operations: Operation[];
   entities: Entity[];
 }
 

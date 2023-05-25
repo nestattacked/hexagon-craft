@@ -1,16 +1,6 @@
-interface Player {
-  secret: string;
-}
+const mapPath = 'path-of-map';
+const dataPath = 'path-of-data';
+const port = 9000;
+const secrets = ['a', 'b'];
 
-const gameLoadPath = 'path-of-game-to-load';
-const gameSavePath = 'path-of-game-to-save';
-const players: Player[] = [
-  {
-    secret: 'a'
-  },
-  {
-    secret: 'b'
-  }
-];
-
-export { gameLoadPath, gameSavePath, players };
+export { mapPath, dataPath, port, secrets };
