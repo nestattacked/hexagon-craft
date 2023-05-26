@@ -1,5 +1,6 @@
 enum OrderType {
-  Move
+  Move,
+  Start
 }
 
 interface Core {

@@ -23,7 +23,8 @@ const unit = () =>
   object<Unit>({
     id: string(),
     coord: vector3(),
-    type: constant(EntityType.Unit)
+    type: constant(EntityType.Unit),
+    owner: integer(-1)
   });
 
 const entity = () => oneOf<Entity>(tile(), unit());

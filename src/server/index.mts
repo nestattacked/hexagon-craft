@@ -1,5 +1,5 @@
 import { Socket, createServer } from 'net';
-import { loadGame } from './load-game.mjs';
+import { load } from './load.mjs';
 import { tick } from '../engine/tick.mjs';
 import { Order, test, parse } from '../order/index.mjs';
 import { port, secrets } from './config.mjs';
@@ -8,8 +8,9 @@ import { order as orderDecoder } from '../common/decoder/order.mjs';
 import { isValidSignature } from '../common/sign.mjs';
 import { integer } from '../common/decoder/common.mjs';
 import { encodeMessage } from '../common/encode-message.mjs';
+import { OrderType } from '../order/core.mjs';
 
-const game = loadGame();
+const { game } = load();
 const sockets: (Socket | undefined)[] = secrets.map(() => undefined);
 
 const onOrder = (order: Order) => {
@@ -22,6 +23,9 @@ const onOrder = (order: Order) => {
       return;
     }
     const operation = parse(game, order, playerIndex);
+    if (operation.actionsList.length === 0) {
+      return;
+    }
     socket.write(
       encodeMessage(JSON.stringify(operation), secrets[playerIndex])
     );
@@ -41,8 +45,17 @@ const onMessage = (message: string, socket: Socket) => {
       return;
     }
     const playerIndex = decoded.result;
-    if (isValidSignature(body, signature, playerIndex)) {
+    if (
+      isValidSignature(body, signature, playerIndex) &&
+      sockets[playerIndex] === undefined
+    ) {
       sockets[playerIndex] = socket;
+      if (sockets.every((socket) => socket !== undefined)) {
+        onOrder({
+          type: OrderType.Start,
+          commander: -1
+        });
+      }
     }
     return;
   }
