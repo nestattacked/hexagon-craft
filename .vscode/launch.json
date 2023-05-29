@@ -1,0 +1,46 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "server",
+      "program": "${workspaceFolder}/src/server/index.mts",
+      "args": [
+        "--configuration",
+        "../../../asset/config/server/main.json",
+        "--map",
+        "../../../asset/map/playground.json",
+        "--data",
+        "../../../asset/data/core.json"
+      ],
+      "outFiles": ["${workspaceFolder}/build/**/*.mjs"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "client0",
+      "program": "${workspaceFolder}/src/client/index.mts",
+      "args": [
+        "--configuration",
+        "../../../asset/config/client/0.json",
+        "--data",
+        "../../../asset/data/core.json"
+      ],
+      "outFiles": ["${workspaceFolder}/build/**/*.mjs"]
+    },
+        {
+      "type": "node",
+      "request": "launch",
+      "name": "client1",
+      "program": "${workspaceFolder}/src/client/index.mts",
+      "args": [
+        "--configuration",
+        "../../../asset/config/client/1.json",
+        "--data",
+        "../../../asset/data/core.json"
+      ],
+      "outFiles": ["${workspaceFolder}/build/**/*.mjs"]
+    }
+  ]
+}

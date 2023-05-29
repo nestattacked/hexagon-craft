@@ -2,8 +2,14 @@
   "name": "hexagon-craft",
   "version": "0.0.1",
   "scripts": {
-    "dev": "nodemon --exec ts-node src/server.mts",
+    "dev:server": "nodemon --exec ts-node src/server/index.mts --configuration ../../../asset/config/server/main.json --map ../../../asset/map/playground.json --data ../../../asset/data/core.json",
+    "dev:client0": "nodemon --exec ts-node src/client/index.mts --configuration ../../../asset/config/client/0.json --data ../../../asset/data/core.json",
+    "dev:client1": "nodemon --exec ts-node src/client/index.mts --configuration ../../../asset/config/client/1.json --data ../../../asset/data/core.json",
+    "run:server": "yarn build && node build/server/index.mjs --configuration ../../../asset/config/server/main.json --map ../../../asset/map/playground.json --data ../../../asset/data/core.json",
+    "run:client0": "yarn build && node build/client/index.mjs --configuration ../../../asset/config/client/0.json --data ../../../asset/data/core.json",
+    "run:client1": "yarn build && node build/client/index.mjs --configuration ../../../asset/config/client/1.json --data ../../../asset/data/core.json",
     "lint": "eslint .",
+    "predebug": "rimraf build && tsc -p tsconfig.debug.json",
     "build": "rimraf build && tsc -p tsconfig.json"
   },
   "devDependencies": {

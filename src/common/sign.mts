@@ -1,5 +1,4 @@
 import { createHmac } from 'crypto';
-import { secrets } from '../server/config.mjs';
 
 const sign = (data: string, secret: string) => {
   const hmac = createHmac('sha256', secret);
@@ -7,12 +6,7 @@ const sign = (data: string, secret: string) => {
   return hmac.digest('hex');
 };
 
-const isValidSignature = (
-  body: string,
-  signature: string,
-  playerIndex: number
-) => {
-  const secret = secrets[playerIndex];
+const isValidSignature = (body: string, signature: string, secret: string) => {
   if (secret === undefined) {
     return false;
   }

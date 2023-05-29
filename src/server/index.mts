@@ -2,7 +2,6 @@ import { Socket, createServer } from 'net';
 import { load } from './load.mjs';
 import { tick } from '../engine/tick.mjs';
 import { Order, test, parse } from '../order/index.mjs';
-import { port, secrets } from './config.mjs';
 import { decodeMessages } from '../common/decode-messages.mjs';
 import { order as orderDecoder } from '../common/decoder/order.mjs';
 import { isValidSignature } from '../common/sign.mjs';
@@ -10,8 +9,8 @@ import { integer } from '../common/decoder/common.mjs';
 import { encodeMessage } from '../common/encode-message.mjs';
 import { OrderType } from '../order/core.mjs';
 
-const { game } = load();
-const sockets: (Socket | undefined)[] = secrets.map(() => undefined);
+const { config, game } = await load();
+const sockets: (Socket | undefined)[] = config.secrets.map(() => undefined);
 
 const onOrder = (order: Order) => {
   if (!test(game, order)) {
@@ -27,7 +26,7 @@ const onOrder = (order: Order) => {
       return;
     }
     socket.write(
-      encodeMessage(JSON.stringify(operation), secrets[playerIndex])
+      encodeMessage(JSON.stringify(operation), config.secrets[playerIndex])
     );
   });
 
@@ -46,7 +45,7 @@ const onMessage = (message: string, socket: Socket) => {
     }
     const playerIndex = decoded.result;
     if (
-      isValidSignature(body, signature, playerIndex) &&
+      isValidSignature(body, signature, config.secrets[playerIndex]) &&
       sockets[playerIndex] === undefined
     ) {
       sockets[playerIndex] = socket;
@@ -64,7 +63,9 @@ const onMessage = (message: string, socket: Socket) => {
   if (!decoded.ok) {
     return;
   }
-  if (!isValidSignature(body, signature, decoded.result.commander)) {
+  if (
+    !isValidSignature(body, signature, config.secrets[decoded.result.commander])
+  ) {
     return;
   }
 
@@ -83,4 +84,4 @@ const server = createServer((socket) => {
   socket.on('data', onData);
 });
 
-server.listen(port);
+server.listen(config.port);
