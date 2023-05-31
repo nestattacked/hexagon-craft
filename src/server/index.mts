@@ -2,12 +2,12 @@ import { Socket, createServer } from 'net';
 import { load } from './load.mjs';
 import { tick } from '../engine/tick.mjs';
 import { Order, test, parse } from '../order/index.mjs';
-import { decodeMessages } from '../common/decode-messages.mjs';
 import { order as orderDecoder } from '../common/decoder/order.mjs';
 import { isValidSignature } from '../common/sign.mjs';
 import { integer } from '../common/decoder/common.mjs';
-import { encodeMessage } from '../common/encode-message.mjs';
+import { encodeMessage } from '../common/network/encode-message.mjs';
 import { OrderType } from '../order/core.mjs';
+import { listenData } from '../common/network/listen-data.mjs';
 
 const { config, game } = await load();
 const sockets: (Socket | undefined)[] = config.secrets.map(() => undefined);
@@ -39,11 +39,7 @@ const onMessage = (message: string, socket: Socket) => {
   const body = message.slice(0, message.length - 64);
 
   if (!sockets.includes(socket)) {
-    const decoded = integer(0).run(body);
-    if (!decoded.ok) {
-      return;
-    }
-    const playerIndex = decoded.result;
+    const playerIndex = integer(0).runWithException(JSON.parse(body));
     if (
       isValidSignature(body, signature, config.secrets[playerIndex]) &&
       sockets[playerIndex] === undefined
@@ -59,29 +55,19 @@ const onMessage = (message: string, socket: Socket) => {
     return;
   }
 
-  const decoded = orderDecoder().run(body);
-  if (!decoded.ok) {
+  const order = orderDecoder().runWithException(JSON.parse(body));
+  if (!isValidSignature(body, signature, config.secrets[order.commander])) {
     return;
   }
-  if (
-    !isValidSignature(body, signature, config.secrets[decoded.result.commander])
-  ) {
-    return;
-  }
-
-  onOrder(decoded.result);
+  onOrder(order);
 };
 
 const server = createServer((socket) => {
-  let remain = '';
-
-  const onData = (data: Buffer) => {
-    const result = decodeMessages(remain, data);
-    remain = result.remain;
-    result.messages.forEach((message) => onMessage(message, socket));
+  const onMessageWithSocket = (message: string) => onMessage(message, socket);
+  const onClose = () => {
+    console.log(`player ${sockets.indexOf(socket)} is disconnected`);
   };
-
-  socket.on('data', onData);
+  listenData(socket, onMessageWithSocket, onClose);
 });
 
 server.listen(config.port);

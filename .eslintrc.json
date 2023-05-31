@@ -18,7 +18,8 @@
         "trailingComma": "none"
       }
     ],
-    "no-unused-vars": "off"
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-empty-function": "off"
   },
   "root": true
 }

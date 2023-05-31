@@ -1,10 +1,11 @@
 import { Socket } from 'net';
 import { tick } from '../engine/tick.mjs';
 import { Operation } from '../engine/operation.mjs';
-import { decodeMessages } from '../common/decode-messages.mjs';
 import { sign } from '../common/sign.mjs';
 import { operation as operationDecoder } from '../common/decoder/operation.mjs';
 import { load } from './load.mjs';
+import { encodeMessage } from '../common/network/encode-message.mjs';
+import { listenData } from '../common/network/listen-data.mjs';
 
 const { config, game } = await load();
 
@@ -20,21 +21,20 @@ const onMessage = (message: string) => {
     return;
   }
 
-  const decoded = operationDecoder().run(body);
-  if (!decoded.ok) {
-    return;
-  }
-
-  onOperation(decoded.result);
+  const operation = operationDecoder().runWithException(JSON.parse(body));
+  onOperation(operation);
 };
 
-let remain = '';
-const onData = (data: Buffer) => {
-  const result = decodeMessages(remain, data);
-  remain = result.remain;
-  result.messages.forEach(onMessage);
+const onClose = () => {
+  console.log('disconnected');
+};
+
+const onConnect = () => {
+  client.write(
+    encodeMessage(JSON.stringify(config.playerIndex), config.secret)
+  );
 };
 
 const client = new Socket();
-client.on('data', onData);
-client.connect(config.port, config.host);
+listenData(client, onMessage, onClose);
+client.connect(config.port, config.host, onConnect);
