@@ -19,24 +19,11 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "client0",
-      "program": "${workspaceFolder}/src/client/index.mts",
+      "name": "helper",
+      "program": "${workspaceFolder}/src/helper/index.mts",
       "args": [
         "--configuration",
-        "../../../asset/config/client/0.json",
-        "--data",
-        "../../../asset/data/core.json"
-      ],
-      "outFiles": ["${workspaceFolder}/build/**/*.mjs"]
-    },
-        {
-      "type": "node",
-      "request": "launch",
-      "name": "client1",
-      "program": "${workspaceFolder}/src/client/index.mts",
-      "args": [
-        "--configuration",
-        "../../../asset/config/client/1.json",
+        "../../../asset/config/helper/main.json",
         "--data",
         "../../../asset/data/core.json"
       ],

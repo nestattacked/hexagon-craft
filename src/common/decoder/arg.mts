@@ -12,10 +12,7 @@ const serverConfig = () =>
 
 const clientConfig = () =>
   object({
-    host: string(),
-    port: port(),
-    playerIndex: integer(0),
-    secret: string()
+    port: port()
   });
 
 const map = () => array(entity());
