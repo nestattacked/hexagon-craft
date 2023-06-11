@@ -2,13 +2,13 @@ import { Entity } from '../game/entity/index.mjs';
 import { Game } from '../game/index.mjs';
 import { ActionType, Core } from './core.mjs';
 
-interface SeeAction extends Core {
-  type: ActionType.See;
+interface EnterAction extends Core {
+  type: ActionType.Enter;
   entity: Entity;
 }
 
-const act = (game: Game, action: SeeAction) => {
+const act = (game: Game, action: EnterAction) => {
   game.entities.push({ ...action.entity });
 };
 
-export { SeeAction, act };
+export { EnterAction, act };

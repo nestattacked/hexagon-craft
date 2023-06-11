@@ -5,7 +5,6 @@ import { ActionType, Core } from './core.mjs';
 
 interface MoveAction extends Core {
   type: ActionType.Move;
-  id: string;
   step: Vector3;
 }
 

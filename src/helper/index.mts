@@ -12,7 +12,9 @@ app.use(express.json());
 app.post('/operation', (req, res) => {
   try {
     const operation = operationDecoder().runWithException(req.body);
-    tick(game, operation);
+    operation.steps.forEach((step) => {
+      tick(game, step);
+    });
     res.send({ ok: true });
   } catch (error) {
     res.send({ ok: false });

@@ -3,7 +3,7 @@ import { action } from './action.mjs';
 
 const operation = () =>
   object({
-    actionsList: array(array(action()))
+    steps: array(array(action()))
   });
 
 export { operation };

@@ -1,10 +1,9 @@
-import { act } from '../action/index.mjs';
+import { Action, act } from '../action/index.mjs';
 import { Game } from '../game/index.mjs';
-import { Operation } from './operation.mjs';
 
-const tick = (game: Game, operation: Operation) => {
-  operation.actionsList.forEach((actions) => {
-    actions.forEach((action) => act(game, action));
+const tick = (game: Game, actions: Action[]) => {
+  actions.forEach((action) => {
+    act(game, action);
   });
 };
 

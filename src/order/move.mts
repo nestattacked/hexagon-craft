@@ -1,9 +1,9 @@
+import { ActionType } from '../action/core.mjs';
 import { Vector3, sum } from '../common/vector3.mjs';
+import { EntityType } from '../game/entity/core.mjs';
 import { Game, getEntityByCoord, getEntityById } from '../game/index.mjs';
 import { Core, OrderType } from './core.mjs';
-import { Operation } from '../engine/operation.mjs';
-import { EntityType } from '../game/entity/core.mjs';
-import { ActionType } from '../action/core.mjs';
+import { Executor } from './executor.mjs';
 
 interface MoveOrder extends Core {
   type: OrderType.Move;
@@ -11,35 +11,36 @@ interface MoveOrder extends Core {
   steps: Vector3[];
 }
 
-const test = (game: Game, order: MoveOrder): boolean => {
+function* executor(game: Game, order: MoveOrder): Executor {
   const unit = getEntityById(game, order.id, EntityType.Unit);
 
   if (unit === undefined || unit.owner !== order.commander) {
-    return false;
+    return;
   }
 
-  let coord = unit.coord;
+  if (!order.steps.every(isSingleStep)) {
+    return;
+  }
+
   for (const step of order.steps) {
-    coord = sum(coord, step);
+    const coord = sum(unit.coord, step);
     const tile = getEntityByCoord(game, coord, EntityType.Tile);
     if (tile === undefined) {
-      return false;
+      return;
+    } else {
+      yield [
+        {
+          type: ActionType.Move,
+          id: order.id,
+          step
+        }
+      ];
     }
   }
+}
 
-  return true;
+const isSingleStep = (step: Vector3) => {
+  return step.q * step.q + step.r * step.r + step.s * step.s === 2;
 };
 
-const parse = (game: Game, order: MoveOrder, viewer: number): Operation => {
-  return {
-    actionsList: order.steps.map((step) => [
-      {
-        type: ActionType.Move,
-        id: order.id,
-        step
-      }
-    ])
-  };
-};
-
-export { MoveOrder, test, parse };
+export { MoveOrder, executor };

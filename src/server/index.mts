@@ -1,37 +1,34 @@
 import { Socket, createServer } from 'net';
 import { load } from './load.mjs';
-import { tick } from '../engine/tick.mjs';
-import { Order, test, parse } from '../order/index.mjs';
+import { Order } from '../order/index.mjs';
 import { order as orderDecoder } from '../common/decoder/order.mjs';
-import { isValidSignature } from '../common/sign.mjs';
+import { isValidSignature } from '../common/network/sign.mjs';
 import { integer } from '../common/decoder/common.mjs';
 import { encodeMessage } from '../common/network/encode-message.mjs';
 import { OrderType } from '../order/core.mjs';
 import { listenData } from '../common/network/listen-data.mjs';
+import { runOrder } from '../engine/run-order.mjs';
 
-const { config, game } = await load();
+const { config, game, map } = await load();
 const sockets: (Socket | undefined)[] = config.secrets.map(() => undefined);
 
 const onOrder = (order: Order) => {
-  if (!test(game, order)) {
-    return;
-  }
-
+  const players = config.secrets.map((_, index) => index);
+  const operations = runOrder(game, order, players);
   sockets.forEach((socket, playerIndex) => {
     if (socket === undefined) {
       return;
     }
-    const operation = parse(game, order, playerIndex);
-    if (operation.actionsList.length === 0) {
+
+    const operation = operations[playerIndex];
+    if (operation.steps.length === 0) {
       return;
     }
+
     socket.write(
       encodeMessage(JSON.stringify(operation), config.secrets[playerIndex])
     );
   });
-
-  const operation = parse(game, order, -1);
-  tick(game, operation);
 };
 
 const onMessage = (message: string, socket: Socket) => {
@@ -48,7 +45,8 @@ const onMessage = (message: string, socket: Socket) => {
       if (sockets.every((socket) => socket !== undefined)) {
         onOrder({
           type: OrderType.Start,
-          commander: -1
+          commander: -1,
+          map
         });
       }
     }

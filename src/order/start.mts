@@ -1,31 +1,21 @@
-import { ActionType } from '../action/core.mjs';
-import { Operation } from '../engine/operation.mjs';
+import { Executor } from './executor.mjs';
 import { Game } from '../game/index.mjs';
 import { Core, OrderType } from './core.mjs';
+import { Entity } from '../game/entity/index.mjs';
 
 interface StartOrder extends Core {
   type: OrderType.Start;
+  map: Entity[];
 }
 
-const test = (game: Game, order: StartOrder): boolean => {
-  return order.commander === -1;
-};
-
-const parse = (game: Game, order: StartOrder, viewer: number): Operation => {
-  if (viewer === -1) {
-    return {
-      actionsList: []
-    };
+function* executor(game: Game, order: StartOrder): Executor {
+  if (order.commander !== -1) {
+    return;
   }
 
-  return {
-    actionsList: [
-      game.entities.map((entity) => ({
-        type: ActionType.See,
-        entity
-      }))
-    ]
-  };
-};
+  game.entities = order.map;
 
-export { StartOrder, test, parse };
+  yield [];
+}
+
+export { StartOrder, executor };

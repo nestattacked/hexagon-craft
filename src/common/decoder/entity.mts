@@ -24,7 +24,8 @@ const unit = () =>
     id: string(),
     coord: vector3(),
     type: constant(EntityType.Unit),
-    owner: integer(-1)
+    owner: integer(-1),
+    direction: vector3()
   });
 
 const entity = () => oneOf<Entity>(tile(), unit());

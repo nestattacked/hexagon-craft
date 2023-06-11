@@ -9,8 +9,8 @@ import { vector3 } from './common.mjs';
 import { entity } from './entity.mjs';
 import { Action } from '../../action/index.mjs';
 import { MoveAction } from '../../action/move.mjs';
-import { SeeAction } from '../../action/see.mjs';
-import { UnseeAction } from '../../action/unsee.mjs';
+import { EnterAction } from '../../action/enter.mjs';
+import { LeaveAction } from '../../action/leave.mjs';
 
 const move = () =>
   object<MoveAction>({
@@ -19,18 +19,19 @@ const move = () =>
     step: vector3()
   });
 
-const see = () =>
-  object<SeeAction>({
-    type: constant(ActionType.See),
+const enter = () =>
+  object<EnterAction>({
+    type: constant(ActionType.Enter),
+    id: string(),
     entity: entity()
   });
 
-const unsee = () =>
-  object<UnseeAction>({
-    type: constant(ActionType.Unsee),
+const leave = () =>
+  object<LeaveAction>({
+    type: constant(ActionType.Leave),
     id: string()
   });
 
-const action = () => oneOf<Action>(move(), see(), unsee());
+const action = () => oneOf<Action>(move(), enter(), leave());
 
 export { action };

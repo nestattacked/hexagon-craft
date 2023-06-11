@@ -10,8 +10,7 @@ import {
 const load = async () => {
   const { config, map, data } = await parse();
   const game = createGame();
-  game.entities = map;
-  return { config, game, data };
+  return { config, game, map, data };
 };
 
 const parse = async () => {

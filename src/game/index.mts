@@ -1,6 +1,7 @@
 import { Vector3, equal } from '../common/vector3.mjs';
 import { EntityType } from './entity/core.mjs';
 import { Entity } from './entity/index.mjs';
+import { Unit } from './entity/unit.mjs';
 
 interface Game {
   entities: Entity[];
@@ -16,6 +17,12 @@ const getEntityById = <T extends EntityType, E extends Entity & { type: T }>(
   ) as E | undefined;
 };
 
+const getUnitsByOwner = (game: Game, owner: number) => {
+  return game.entities.filter(
+    (entity) => entity.type === EntityType.Unit && entity.owner === owner
+  ) as Unit[];
+};
+
 const getEntityByCoord = <T extends EntityType, E extends Entity & { type: T }>(
   game: Game,
   coord: Vector3,
@@ -27,4 +34,14 @@ const getEntityByCoord = <T extends EntityType, E extends Entity & { type: T }>(
   ) as E | undefined;
 };
 
-export { Game, getEntityById, getEntityByCoord };
+const getEntitiesByCoord = (game: Game, coord: Vector3) => {
+  return game.entities.filter((entity) => equal(entity.coord, coord));
+};
+
+export {
+  Game,
+  getEntityById,
+  getUnitsByOwner,
+  getEntityByCoord,
+  getEntitiesByCoord
+};

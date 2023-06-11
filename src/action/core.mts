@@ -1,11 +1,12 @@
 enum ActionType {
   Move,
-  See,
-  Unsee
+  Enter,
+  Leave
 }
 
 interface Core {
   type: ActionType;
+  id: string;
 }
 
 export { ActionType, Core };
