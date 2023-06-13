@@ -1,6 +1,7 @@
 import { array, object, string } from '@mojotech/json-type-validation';
 import { integer } from './common.mjs';
 import { entity } from './entity.mjs';
+import { order } from './order.mjs';
 
 const port = () => integer(0);
 
@@ -19,4 +20,10 @@ const map = () => array(entity());
 
 const data = () => object();
 
-export { serverConfig, clientConfig, map, data };
+const script = () =>
+  object({
+    orders: array(order()),
+    players: array(integer(0))
+  });
+
+export { serverConfig, clientConfig, map, data, script };

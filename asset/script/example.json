@@ -1,0 +1,262 @@
+{
+  "orders": [
+    {
+      "type": 1,
+      "commander": -1,
+      "map": [
+        {
+          "id": "tile1",
+          "type": 0,
+          "coord": {
+            "q": 0,
+            "r": -2,
+            "s": 2
+          },
+          "height": 0,
+          "terrain": 0
+        },
+        {
+          "id": "tile2",
+          "type": 0,
+          "coord": {
+            "q": 1,
+            "r": -2,
+            "s": 1
+          },
+          "height": 0,
+          "terrain": 0
+        },
+        {
+          "id": "tile3",
+          "type": 0,
+          "coord": {
+            "q": 2,
+            "r": -2,
+            "s": 0
+          },
+          "height": 0,
+          "terrain": 0
+        },
+        {
+          "id": "tile4",
+          "type": 0,
+          "coord": {
+            "q": -1,
+            "r": -1,
+            "s": 2
+          },
+          "height": 0,
+          "terrain": 0
+        },
+        {
+          "id": "tile5",
+          "type": 0,
+          "coord": {
+            "q": 0,
+            "r": -1,
+            "s": 1
+          },
+          "height": 0,
+          "terrain": 0
+        },
+        {
+          "id": "tile6",
+          "type": 0,
+          "coord": {
+            "q": 1,
+            "r": -1,
+            "s": 0
+          },
+          "height": 0,
+          "terrain": 0
+        },
+        {
+          "id": "tile7",
+          "type": 0,
+          "coord": {
+            "q": 2,
+            "r": -1,
+            "s": -1
+          },
+          "height": 0,
+          "terrain": 0
+        },
+        {
+          "id": "tile8",
+          "type": 0,
+          "coord": {
+            "q": -2,
+            "r": 0,
+            "s": 2
+          },
+          "height": 0,
+          "terrain": 0
+        },
+        {
+          "id": "tile9",
+          "type": 0,
+          "coord": {
+            "q": -1,
+            "r": 0,
+            "s": 1
+          },
+          "height": 0,
+          "terrain": 0
+        },
+        {
+          "id": "tile10",
+          "type": 0,
+          "coord": {
+            "q": 0,
+            "r": 0,
+            "s": 0
+          },
+          "height": 0,
+          "terrain": 0
+        },
+        {
+          "id": "tile11",
+          "type": 0,
+          "coord": {
+            "q": 1,
+            "r": 0,
+            "s": -1
+          },
+          "height": 0,
+          "terrain": 0
+        },
+        {
+          "id": "tile12",
+          "type": 0,
+          "coord": {
+            "q": 2,
+            "r": 0,
+            "s": -2
+          },
+          "height": 0,
+          "terrain": 0
+        },
+        {
+          "id": "tile13",
+          "type": 0,
+          "coord": {
+            "q": -2,
+            "r": 1,
+            "s": 1
+          },
+          "height": 0,
+          "terrain": 0
+        },
+        {
+          "id": "tile14",
+          "type": 0,
+          "coord": {
+            "q": -1,
+            "r": 1,
+            "s": 0
+          },
+          "height": 0,
+          "terrain": 0
+        },
+        {
+          "id": "tile15",
+          "type": 0,
+          "coord": {
+            "q": 0,
+            "r": 1,
+            "s": -1
+          },
+          "height": 0,
+          "terrain": 0
+        },
+        {
+          "id": "tile16",
+          "type": 0,
+          "coord": {
+            "q": 1,
+            "r": 1,
+            "s": -2
+          },
+          "height": 0,
+          "terrain": 0
+        },
+        {
+          "id": "tile17",
+          "type": 0,
+          "coord": {
+            "q": -2,
+            "r": 2,
+            "s": 0
+          },
+          "height": 0,
+          "terrain": 0
+        },
+        {
+          "id": "tile18",
+          "type": 0,
+          "coord": {
+            "q": -1,
+            "r": 2,
+            "s": -1
+          },
+          "height": 0,
+          "terrain": 0
+        },
+        {
+          "id": "tile19",
+          "type": 0,
+          "coord": {
+            "q": 0,
+            "r": 2,
+            "s": -2
+          },
+          "height": 0,
+          "terrain": 0
+        },
+        {
+          "id": "unit1",
+          "type": 1,
+          "coord": {
+            "q": 0,
+            "r": 0,
+            "s": 0
+          },
+          "owner": 0,
+          "direction": {
+            "q": -1,
+            "r": 0,
+            "s": 1
+          }
+        },
+        {
+          "id": "unit2",
+          "type": 1,
+          "coord": {
+            "q": 2,
+            "r": 0,
+            "s": -2
+          },
+          "owner": 1,
+          "direction": {
+            "q": -1,
+            "r": 0,
+            "s": 1
+          }
+        }
+      ]
+    },
+    {
+      "type": 0,
+      "commander": 0,
+      "id": "unit1",
+      "steps": [
+        {
+          "q": -1,
+          "r": 0,
+          "s": 1
+        }
+      ]
+    }
+  ],
+  "players": [0, 1]
+}

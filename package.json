@@ -4,8 +4,10 @@
   "scripts": {
     "dev:server": "nodemon --exec ts-node src/server/index.mts --configuration ../../../asset/config/server/main.json --map ../../../asset/map/playground.json --data ../../../asset/data/core.json",
     "dev:helper": "nodemon --exec ts-node src/helper/index.mts --configuration ../../../asset/config/helper/main.json --data ../../../asset/data/core.json",
+    "dev:performer": "nodemon --exec ts-node src/performer/index.mts --data ../../../asset/data/core.json --script ../../../asset/script/example.json",
     "run:server": "yarn build && node build/server/index.mjs --configuration ../../../asset/config/server/main.json --map ../../../asset/map/playground.json --data ../../../asset/data/core.json",
     "run:helper": "yarn build && node build/helper/index.mjs --configuration ../../../asset/config/helper/main.json --data ../../../asset/data/core.json",
+    "run:performer": "yarn build && node build/performer/index.mjs --data ../../../asset/data/core.json --script ../../../asset/script/example.json",
     "lint": "eslint .",
     "predebug": "rimraf build && tsc -p tsconfig.debug.json",
     "build": "rimraf build && tsc -p tsconfig.json"

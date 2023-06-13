@@ -28,6 +28,20 @@
         "../../../asset/data/core.json"
       ],
       "outFiles": ["${workspaceFolder}/build/**/*.mjs"]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "performer",
+      "program": "${workspaceFolder}/src/performer/index.mts",
+      "args": [
+        "--data",
+        "../../../asset/data/core.json",
+        "--script",
+        "../../../asset/script/example.json"
+      ],
+      "outFiles": ["${workspaceFolder}/build/**/*.mjs"],
+      "console": "externalTerminal" 
     }
   ]
 }

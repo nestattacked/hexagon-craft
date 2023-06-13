@@ -3,7 +3,7 @@ import { EnterAction } from '../action/enter.mjs';
 import { Action } from '../action/index.mjs';
 import { LeaveAction } from '../action/leave.mjs';
 import { Game } from '../game/index.mjs';
-import { Order, executor } from '../order/index.mjs';
+import { Order, execute } from '../order/index.mjs';
 import { View, getView } from './get-view.mjs';
 import { tick } from './tick.mjs';
 
@@ -12,12 +12,12 @@ interface Operation {
 }
 
 const runOrder = (game: Game, order: Order, players: number[]): Operation[] => {
-  const { next } = executor(game, order);
+  const executor = execute(game, order);
   let views: View[] = getViews(game, players);
   const operations: Operation[] = players.map(() => ({ steps: [] }));
 
   while (true) {
-    const { value, done } = next();
+    const { value, done } = executor.next();
 
     if (done) {
       break;

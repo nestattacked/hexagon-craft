@@ -8,7 +8,7 @@ interface StartOrder extends Core {
   map: Entity[];
 }
 
-function* executor(game: Game, order: StartOrder): Executor {
+function* execute(game: Game, order: StartOrder): Executor {
   if (order.commander !== -1) {
     return;
   }
@@ -18,4 +18,4 @@ function* executor(game: Game, order: StartOrder): Executor {
   yield [];
 }
 
-export { StartOrder, executor };
+export { StartOrder, execute };

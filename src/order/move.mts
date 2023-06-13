@@ -11,7 +11,7 @@ interface MoveOrder extends Core {
   steps: Vector3[];
 }
 
-function* executor(game: Game, order: MoveOrder): Executor {
+function* execute(game: Game, order: MoveOrder): Executor {
   const unit = getEntityById(game, order.id, EntityType.Unit);
 
   if (unit === undefined || unit.owner !== order.commander) {
@@ -43,4 +43,4 @@ const isSingleStep = (step: Vector3) => {
   return step.q * step.q + step.r * step.r + step.s * step.s === 2;
 };
 
-export { MoveOrder, executor };
+export { MoveOrder, execute };
